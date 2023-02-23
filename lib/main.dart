@@ -22,6 +22,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
+      },
       home: const HomePage(),
     );
   }
@@ -32,34 +36,28 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
+    return FutureBuilder(
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
       ),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            // final user = FirebaseAuth.instance.currentUser;
-            // final emailVerified = user?.emailVerified ?? false;
-            // if (emailVerified) {
-            //   return Text('Done');
-            // } else {
-            //   return VerifyEmailpage();
-            // Navigator.of(context).push<void>(
-            //   MaterialPageRoute<void>(
-            //     builder: (context) => VerifyEmailpage(),
-            //   ),
-            // );
-            // }
-            return LoginPage();
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          final user = FirebaseAuth.instance.currentUser;
+          final emailVerified = user?.emailVerified ?? false;
+
+          if (user != null) {
+            if (emailVerified) {
+              return Text('Email is verified');
+            } else {
+              return VerifyEmailpage();
+            }
           } else {
-            return Text('Loading....');
+            return LoginPage();
           }
-        },
-      ),
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 }
