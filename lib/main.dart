@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_begineer/firebase_options.dart';
 import 'package:flutter_begineer/views/login_page.dart';
 import 'package:flutter_begineer/views/register_page.dart';
+import 'package:flutter_begineer/views/verify_email_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,14 +42,19 @@ class HomePage extends StatelessWidget {
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            final user = FirebaseAuth.instance.currentUser;
-            final emailVerified = user?.emailVerified ?? false;
-            if (emailVerified) {
-              print('You are a verified user');
-            } else {
-              print('You need to verify your email first');
-            }
-            return Text('Done');
+            // final user = FirebaseAuth.instance.currentUser;
+            // final emailVerified = user?.emailVerified ?? false;
+            // if (emailVerified) {
+            //   return Text('Done');
+            // } else {
+            //   return VerifyEmailpage();
+            // Navigator.of(context).push<void>(
+            //   MaterialPageRoute<void>(
+            //     builder: (context) => VerifyEmailpage(),
+            //   ),
+            // );
+            // }
+            return LoginPage();
           } else {
             return Text('Loading....');
           }
