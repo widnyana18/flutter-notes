@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_begineer/utils/error_dialog.dart';
+import 'dart:developer' as devtools show log;
 import '../firebase_options.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Column(
         children: [
@@ -60,20 +61,29 @@ class _LoginPageState extends State<LoginPage> {
                 final email = _email.text;
                 final password = _password.text;
                 await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: email, password: password);
+                  email: email,
+                  password: password,
+                );
+
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/notes/',
+                  (route) => false,
+                );
               } on FirebaseAuthException catch (e) {
                 switch (e.code) {
                   case 'user-not-found':
-                    print('User not Found');
+                    await showErrorDialog(context, 'User not Found');
                     break;
 
                   case 'wrong-password':
-                    print('Wrong Password');
+                    await showErrorDialog(context, 'Wrong Password');
                     break;
 
                   default:
-                    print(e.code);
+                    await showErrorDialog(context, e.code);
                 }
+              } catch (e) {
+                await showErrorDialog(context, e.toString());
               }
             },
           ),
@@ -82,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.of(context)
                   .pushNamedAndRemoveUntil('/register/', (route) => false);
             },
-            child: Text('Not regitered yet? Register here!'),
+            child: const Text('Not regitered yet? Register here!'),
           ),
         ],
       ),

@@ -2,9 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/firebase_options.dart';
-import 'package:flutter_begineer/views/login_page.dart';
-import 'package:flutter_begineer/views/register_page.dart';
-import 'package:flutter_begineer/views/verify_email_page.dart';
+import 'package:flutter_begineer/views/views.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +12,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,10 +20,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage(),
+        '/login/': (context) => const LoginPage(),
+        '/register/': (context) => const RegisterPage(),
+        '/notes/': (context) => const NotesPage(),
       },
       home: const HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -43,19 +42,19 @@ class HomePage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final user = FirebaseAuth.instance.currentUser;
-          final emailVerified = user?.emailVerified ?? false;
 
           if (user != null) {
-            if (emailVerified) {
-              return Text('Email is verified');
-            } else {
-              return VerifyEmailpage();
-            }
+            // if (user.emailVerified) {
+            return const NotesPage();
+            // }
+            // else {
+            //   return const VerifyEmailPage();
+            // }
           } else {
-            return LoginPage();
+            return const LoginPage();
           }
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );

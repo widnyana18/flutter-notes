@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/firebase_options.dart';
+import 'dart:developer' as devtools show log;
+
+import 'package:flutter_begineer/views/verify_email_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -32,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Register'),
       ),
       body: Column(
         children: [
@@ -60,19 +63,30 @@ class _RegisterPageState extends State<RegisterPage> {
                 final password = _password.text;
                 await FirebaseAuth.instance.createUserWithEmailAndPassword(
                     email: email, password: password);
+
+                // Navigator.of(context).pushAndRemoveUntil(
+                //   MaterialPageRoute(
+                //     builder: (context) => VerifyEmailPage(),
+                //   ),
+                //   (_) => false,
+                // );
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/notes/',
+                  (route) => false,
+                );
               } on FirebaseAuthException catch (e) {
                 switch (e.code) {
                   case 'weak-password':
-                    print('Weak password');
+                    devtools.log('Weak password');
                     break;
                   case 'email-already-in-use':
-                    print('Email already in use');
+                    devtools.log('Email already in use');
                     break;
                   case 'invalid-email':
-                    print('Invalid email');
+                    devtools.log('Invalid email');
                     break;
                   default:
-                    print(e.code);
+                    devtools.log(e.code);
                 }
               }
             },
@@ -82,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Navigator.of(context)
                   .pushNamedAndRemoveUntil('/login/', (route) => false);
             },
-            child: Text('Already registered? Login here!'),
+            child: const Text('Already registered? Login here!'),
           ),
         ],
       ),
