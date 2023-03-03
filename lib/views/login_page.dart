@@ -57,34 +57,14 @@ class _LoginPageState extends State<LoginPage> {
           TextButton(
             child: const Text('Login'),
             onPressed: () async {
-              try {
-                final email = _email.text;
-                final password = _password.text;
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                  email: email,
-                  password: password,
-                );
-
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/notes/',
-                  (route) => false,
-                );
-              } on FirebaseAuthException catch (e) {
-                switch (e.code) {
-                  case 'user-not-found':
-                    await showErrorDialog(context, 'User not Found');
-                    break;
-
-                  case 'wrong-password':
-                    await showErrorDialog(context, 'Wrong Password');
-                    break;
-
-                  default:
-                    await showErrorDialog(context, e.code);
-                }
-              } catch (e) {
-                await showErrorDialog(context, e.toString());
-              }
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/notes/',
+                (route) => false,
+              );
+              // Navigator.of(context).pushNamedAndRemoveUntil(
+              //   '/verify-email/',
+              //   (route) => false,
+              // );
             },
           ),
           TextButton(

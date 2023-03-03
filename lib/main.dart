@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/login/': (context) => const LoginPage(),
         '/register/': (context) => const RegisterPage(),
         '/notes/': (context) => const NotesPage(),
+        '/verify-email/': (context) => const VerifyEmailPage(),
       },
       home: const HomePage(),
       debugShowCheckedModeBanner: false,
@@ -44,12 +45,11 @@ class HomePage extends StatelessWidget {
           final user = FirebaseAuth.instance.currentUser;
 
           if (user != null) {
-            // if (user.emailVerified) {
-            return const NotesPage();
-            // }
-            // else {
-            //   return const VerifyEmailPage();
-            // }
+            if (user.emailVerified) {
+              return const NotesPage();
+            } else {
+              return const VerifyEmailPage();
+            }
           } else {
             return const LoginPage();
           }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/firebase_options.dart';
+import 'package:flutter_begineer/utils/error_dialog.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:flutter_begineer/views/verify_email_page.dart';
@@ -57,38 +58,8 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           TextButton(
             child: const Text('Register'),
-            onPressed: () async {
-              try {
-                final email = _email.text;
-                final password = _password.text;
-                await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                    email: email, password: password);
-
-                // Navigator.of(context).pushAndRemoveUntil(
-                //   MaterialPageRoute(
-                //     builder: (context) => VerifyEmailPage(),
-                //   ),
-                //   (_) => false,
-                // );
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/notes/',
-                  (route) => false,
-                );
-              } on FirebaseAuthException catch (e) {
-                switch (e.code) {
-                  case 'weak-password':
-                    devtools.log('Weak password');
-                    break;
-                  case 'email-already-in-use':
-                    devtools.log('Email already in use');
-                    break;
-                  case 'invalid-email':
-                    devtools.log('Invalid email');
-                    break;
-                  default:
-                    devtools.log(e.code);
-                }
-              }
+            onPressed: () {
+              Navigator.of(context).pushNamed('/verify-email/');
             },
           ),
           TextButton(

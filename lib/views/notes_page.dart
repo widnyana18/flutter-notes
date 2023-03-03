@@ -17,7 +17,6 @@ class NotesPage extends StatelessWidget {
               if (value == MenuAction.logout) {
                 final shouldLogout = await displayLogout(context);
                 if (shouldLogout) {
-                  await FirebaseAuth.instance.signOut();
                   Navigator.of(context)
                       .pushNamedAndRemoveUntil('/login/', (_) => false);
                 }
