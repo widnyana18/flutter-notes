@@ -1,11 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_begineer/firebase_options.dart';
+import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
+import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/utils/error_dialog.dart';
-import 'dart:developer' as devtools show log;
-
-import 'package:flutter_begineer/views/verify_email_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -58,8 +54,26 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           TextButton(
             child: const Text('Register'),
-            onPressed: () {
-              Navigator.of(context).pushNamed('/verify-email/');
+            onPressed: () async {
+              final email = _email.text;
+              final password = _password.text;
+
+              try {
+                await AuthService.firebase().createUser(
+                  email: email,
+                  password: password,
+                );
+                await AuthService.firebase().sendEmailVerification();
+                Navigator.of(context).pushNamed('/verify-email/');
+              } on WeakPasswordException {
+                await showErrorDialog(context, 'Weak password');
+              } on EmailAlreadyInUseException {
+                await showErrorDialog(context, 'Email already in use');
+              } on InvalidEmailException {
+                await showErrorDialog(context, 'Invalid email');
+              } on GenericAuthException {
+                await showErrorDialog(context, 'Failed to register');
+              }
             },
           ),
           TextButton(

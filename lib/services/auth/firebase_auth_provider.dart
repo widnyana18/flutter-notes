@@ -1,9 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_begineer/firebase_options.dart';
 import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
 import 'package:flutter_begineer/services/auth/auth_provider.dart';
 import 'package:flutter_begineer/services/auth/auth_user.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   @override
   AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
@@ -20,8 +29,10 @@ class FirebaseAuthProvider implements AuthProvider {
     required String password,
   }) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
       if (currentUser != null) {
         return currentUser;
@@ -32,20 +43,15 @@ class FirebaseAuthProvider implements AuthProvider {
       switch (e.code) {
         case 'weak-password':
           throw WeakPasswordException();
-        // await showErrorDialog(context, 'Weak password');
         case 'email-already-in-use':
           throw EmailAlreadyInUseException();
-        // await showErrorDialog(context, 'Email already in use');
         case 'invalid-email':
           throw InvalidEmailException();
-        // await showErrorDialog(context, 'Invalid email');
         default:
           throw GenericAuthException();
-        // await showErrorDialog(context, e.code);
       }
     } catch (e) {
       throw GenericAuthException();
-      // await showErrorDialog(context, e.toString());
     }
   }
 
@@ -55,11 +61,12 @@ class FirebaseAuthProvider implements AuthProvider {
     required String password,
   }) async {
     try {
-      if (currentUser?.isEmailVerified ?? false) {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      if (currentUser != null) {
+        return currentUser;
       } else {
         throw UserNotLoginException();
       }
@@ -67,19 +74,15 @@ class FirebaseAuthProvider implements AuthProvider {
       switch (e.code) {
         case 'user-not-found':
           throw UserNotFoundException();
-        // await showErrorDialog(context, 'User not Found');
 
         case 'wrong-password':
           throw WrongPasswordException();
-        // await showErrorDialog(context, 'Wrong Password');
 
         default:
           throw GenericAuthException();
-        // await showErrorDialog(context, e.code);
       }
     } catch (e) {
       throw GenericAuthException();
-      // await showErrorDialog(context, e.toString());
     }
   }
 

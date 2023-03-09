@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
+import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/utils/error_dialog.dart';
-import 'dart:developer' as devtools show log;
-import '../firebase_options.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -57,14 +55,34 @@ class _LoginPageState extends State<LoginPage> {
           TextButton(
             child: const Text('Login'),
             onPressed: () async {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/notes/',
-                (route) => false,
-              );
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //   '/verify-email/',
-              //   (route) => false,
-              // );
+              final email = _email.text;
+              final password = _password.text;
+              final user = AuthService.firebase().currentUser;
+
+              try {
+                await AuthService.firebase().loginUser(
+                  email: email,
+                  password: password,
+                );
+
+                if (user?.isEmailVerified ?? false) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/notes/',
+                    (route) => false,
+                  );
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/verify-email/',
+                    (route) => false,
+                  );
+                }
+              } on UserNotFoundException {
+                await showErrorDialog(context, 'User not Found');
+              } on WrongPasswordException {
+                await showErrorDialog(context, 'Wrong Password');
+              } on GenericAuthException {
+                await showErrorDialog(context, 'Authentication Error');
+              }
             },
           ),
           TextButton(
