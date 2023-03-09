@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 
 class VerifyEmailPage extends StatelessWidget {
@@ -20,7 +21,7 @@ class VerifyEmailPage extends StatelessWidget {
             onPressed: () async {
               await AuthService.firebase().sendEmailVerification();
               Navigator.of(context).pushNamedAndRemoveUntil(
-                '/notes/',
+                notesRoute,
                 (route) => false,
               );
             },
@@ -30,7 +31,7 @@ class VerifyEmailPage extends StatelessWidget {
             onPressed: () async {
               await AuthService.firebase().signOut();
               Navigator.of(context).pushNamedAndRemoveUntil(
-                '/register/',
+                registerRoute,
                 (route) => false,
               );
             },

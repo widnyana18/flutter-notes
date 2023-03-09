@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/utils/error_dialog.dart';
@@ -67,12 +68,12 @@ class _LoginPageState extends State<LoginPage> {
 
                 if (user?.isEmailVerified ?? false) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/notes/',
+                    notesRoute,
                     (route) => false,
                   );
                 } else {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/verify-email/',
+                    verifyEmailRoute,
                     (route) => false,
                   );
                 }
@@ -88,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
           TextButton(
             onPressed: () {
               Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/register/', (route) => false);
+                  .pushNamedAndRemoveUntil(registerRoute, (route) => false);
             },
             child: const Text('Not regitered yet? Register here!'),
           ),

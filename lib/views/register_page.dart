@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/utils/error_dialog.dart';
@@ -64,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   password: password,
                 );
                 await AuthService.firebase().sendEmailVerification();
-                Navigator.of(context).pushNamed('/verify-email/');
+                Navigator.of(context).pushNamed(verifyEmailRoute);
               } on WeakPasswordException {
                 await showErrorDialog(context, 'Weak password');
               } on EmailAlreadyInUseException {
@@ -79,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
           TextButton(
             onPressed: () {
               Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/login/', (route) => false);
+                  .pushNamedAndRemoveUntil(loginRoute, (route) => false);
             },
             child: const Text('Already registered? Login here!'),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/views/views.dart';
 
@@ -18,10 +19,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/login/': (context) => const LoginPage(),
-        '/register/': (context) => const RegisterPage(),
-        '/notes/': (context) => const NotesPage(),
-        '/verify-email/': (context) => const VerifyEmailPage(),
+        loginRoute: (context) => const LoginPage(),
+        registerRoute: (context) => const RegisterPage(),
+        verifyEmailRoute: (context) => const VerifyEmailPage(),
+        notesRoute: (context) => const NotesPage(),
+        newNotesRoute: (context) => const NewNotePage(),
       },
       home: const HomePage(),
       debugShowCheckedModeBanner: false,
@@ -41,11 +43,11 @@ class HomePage extends StatelessWidget {
           final user = AuthService.firebase().currentUser;
 
           if (user != null) {
-            if (user.isEmailVerified) {
-              return const NotesPage();
-            } else {
-              return const VerifyEmailPage();
-            }
+            // if (user.isEmailVerified) {
+            return const NotesPage();
+            // } else {
+            //   return const VerifyEmailPage();
+            // }
           } else {
             return const LoginPage();
           }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/services/crud/notes_service.dart';
 
@@ -19,7 +20,7 @@ class _NotesPageState extends State<NotesPage> {
   @override
   void initState() {
     _notesService = NotesService();
-    _notesService.open();
+    // _notesService.open();
     super.initState();
   }
 
@@ -35,6 +36,12 @@ class _NotesPageState extends State<NotesPage> {
       appBar: AppBar(
         title: const Text('My Notes'),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(newNotesRoute);
+            },
+            icon: const Icon(Icons.add),
+          ),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               if (value == MenuAction.logout) {
@@ -42,7 +49,7 @@ class _NotesPageState extends State<NotesPage> {
                 if (shouldLogout) {
                   await AuthService.firebase().signOut();
                   Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/login/', (_) => false);
+                      .pushNamedAndRemoveUntil(loginRoute, (_) => false);
                 }
               }
             },
