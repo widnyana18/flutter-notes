@@ -181,7 +181,10 @@ class NotesService {
     return results.map((note) => DatabaseNote.fromRow(note));
   }
 
-  Future<DatabaseNote> updateNote(DatabaseNote note, String text) async {
+  Future<DatabaseNote> updateNote({
+    required DatabaseNote note,
+    required String text,
+  }) async {
     final db = _getDatabaseOrThrow();
     await getNote(note.id);
 
