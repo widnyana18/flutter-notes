@@ -20,7 +20,6 @@ class _NotesPageState extends State<NotesPage> {
   @override
   void initState() {
     _notesService = NotesService();
-    // _notesService.open();
     super.initState();
   }
 
@@ -75,20 +74,6 @@ class _NotesPageState extends State<NotesPage> {
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNotes = snapshot.data!;
-                        return ListView.builder(
-                          itemCount: allNotes.length,
-                          itemBuilder: (context, index) {
-                            final note = allNotes[index].text;
-                            return ListTile(
-                              title: Text(
-                                note,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                              ),
-                            );
-                          },
-                        );
                       } else {
                         return const CircularProgressIndicator();
                       }
