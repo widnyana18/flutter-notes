@@ -10,7 +10,7 @@ class AuthUser {
     this.isEmailVerified = false,
   });
 
-  factory AuthUser.formFirebase(User user) {
+  factory AuthUser.fromFirebase(User user) {
     return AuthUser(
       isEmailVerified: user.emailVerified,
       email: user.email!,

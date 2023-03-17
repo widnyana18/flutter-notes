@@ -25,11 +25,10 @@ class _NewNotePageState extends State<NewNotePage> {
     final existingNote = _note;
     if (existingNote != null) return existingNote;
 
-    final currentUser = AuthService.firebase().currentUser;
-    final email = currentUser?.email;
-    final owner = await _notesService.getUser(email!);
-    _note = await _notesService.createNote(owner);
-    return _note!;
+    final currentUser = AuthService.firebase().currentUser!;
+    final email = currentUser.email;
+    final owner = await _notesService.getUser(email);
+    return await _notesService.createNote(owner);
   }
 
   void _deleteNoteIfEmpty() async {
@@ -87,7 +86,8 @@ class _NewNotePageState extends State<NewNotePage> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: const InputDecoration(
-                    hintText: 'Start typing your note...'),
+                  hintText: 'Start typing your note...',
+                ),
               );
             default:
               return const CircularProgressIndicator();

@@ -66,17 +66,17 @@ class _LoginPageState extends State<LoginPage> {
                   password: password,
                 );
 
-                if (user?.isEmailVerified ?? false) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    notesRoute,
-                    (route) => false,
-                  );
-                } else {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    verifyEmailRoute,
-                    (route) => false,
-                  );
-                }
+                // if (user?.isEmailVerified ?? false) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  notesRoute,
+                  (route) => false,
+                );
+                // } else {
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //   verifyEmailRoute,
+                //   (route) => false,
+                // );
+                // }
               } on UserNotFoundException {
                 await showErrorDialog(context, 'User not Found');
               } on WrongPasswordException {
