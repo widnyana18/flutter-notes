@@ -76,7 +76,6 @@ class NotesService {
   }
 
   Future<DatabaseUser> getOrCreateUser(String email) async {
-    _getDatabaseOrThrow();
     try {
       final user = await getUser(email);
       return user;

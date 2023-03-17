@@ -28,7 +28,9 @@ class _NewNotePageState extends State<NewNotePage> {
     final currentUser = AuthService.firebase().currentUser!;
     final email = currentUser.email;
     final owner = await _notesService.getUser(email);
-    return await _notesService.createNote(owner);
+    final note = await _notesService.createNote(owner);
+    _note = note;
+    return note;
   }
 
   void _deleteNoteIfEmpty() async {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
-import 'package:flutter_begineer/utils/error_dialog.dart';
+import 'package:flutter_begineer/utils/dialogs/error_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -78,11 +78,11 @@ class _LoginPageState extends State<LoginPage> {
                 // );
                 // }
               } on UserNotFoundException {
-                await showErrorDialog(context, 'User not Found');
+                await showErrorDialog(context, content: 'User not Found');
               } on WrongPasswordException {
-                await showErrorDialog(context, 'Wrong Password');
+                await showErrorDialog(context, content: 'Wrong Password');
               } on GenericAuthException {
-                await showErrorDialog(context, 'Authentication Error');
+                await showErrorDialog(context, content: 'Authentication Error');
               }
             },
           ),
