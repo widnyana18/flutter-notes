@@ -69,7 +69,7 @@ class _NotesPageState extends State<NotesPage> {
                     case ConnectionState.waiting:
                     case ConnectionState.active:
                       if (snapshot.hasData) {
-                        final allNotes = snapshot.data!;
+                        final allNotes = snapshot.data as List<DatabaseNote>;
                         return NotesListView(
                           allNotes: allNotes,
                           onDeleteNote: (note) async {

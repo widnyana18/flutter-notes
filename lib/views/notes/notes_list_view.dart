@@ -18,10 +18,10 @@ class NotesListView extends StatelessWidget {
     return ListView.builder(
       itemCount: allNotes.length,
       itemBuilder: (context, index) {
-        final note = allNotes[index].text;
+        final note = allNotes[index];
         return ListTile(
-          title: Text(
-            note,
+          title: const Text(
+            'note.text',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             softWrap: true,
@@ -31,7 +31,7 @@ class NotesListView extends StatelessWidget {
             onPressed: () async {
               final shouldDelete = await showDeleteDialog(context);
               if (shouldDelete) {
-                onDeleteNote;
+                onDeleteNote(note);
               }
             },
           ),

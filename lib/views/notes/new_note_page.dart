@@ -23,37 +23,40 @@ class _NewNotePageState extends State<NewNotePage> {
 
   Future<DatabaseNote> createNewNote() async {
     final existingNote = _note;
-    if (existingNote != null) return existingNote;
+    if (existingNote != null) {
+      return existingNote;
+    }
 
     final currentUser = AuthService.firebase().currentUser!;
     final email = currentUser.email;
     final owner = await _notesService.getUser(email);
-    final note = await _notesService.createNote(owner);
-    _note = note;
-    return note;
+    return await _notesService.createNote(owner);
   }
 
   void _deleteNoteIfEmpty() async {
-    if (_textController.text.isEmpty && _note != null) {
-      await _notesService.deleteNote(_note!.id);
+    final note = _note;
+    if (_textController.text.isEmpty && note != null) {
+      await _notesService.deleteNote(note.id);
     }
   }
 
   void _saveNoteIfNotEmpty() async {
+    final note = _note;
     final text = _textController.text;
-    if (text.isNotEmpty && _note != null) {
+    if (text.isNotEmpty && note != null) {
       await _notesService.updateNote(
-        note: _note!,
+        note: note,
         text: text,
       );
     }
   }
 
   void _textControllerListener() async {
-    if (_note == null) return;
+    final note = _note;
+    if (note == null) return;
     final text = _textController.text;
     await _notesService.updateNote(
-      note: _note!,
+      note: note,
       text: text,
     );
   }
@@ -82,6 +85,7 @@ class _NewNotePageState extends State<NewNotePage> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
+              _note = snapshot.data as DatabaseNote;
               _setUpTextController();
               return TextField(
                 controller: _textController,
