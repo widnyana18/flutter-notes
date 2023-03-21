@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         registerRoute: (context) => const RegisterPage(),
         verifyEmailRoute: (context) => const VerifyEmailPage(),
         notesRoute: (context) => const NotesPage(),
-        newNotesRoute: (context) => const NewNotePage(),
+        createUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
       home: const HomePage(),
       debugShowCheckedModeBanner: false,
