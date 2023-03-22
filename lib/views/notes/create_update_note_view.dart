@@ -80,7 +80,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   void dispose() {
     _deleteNoteIfEmpty();
     _saveNoteIfNotEmpty();
-    _textController.clear();
+    _textController.dispose();
     super.dispose();
   }
 

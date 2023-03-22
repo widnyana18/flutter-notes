@@ -20,16 +20,15 @@ class NotesService {
       },
     );
   }
-
   static final NotesService _shared = NotesService._sharedInstance();
   factory NotesService() => _shared;
 
   Stream<List<DatabaseNote>> get allNotes {
     return _notesController.stream.filter(
-      (notes) {
+      (note) {
         final currentUser = _user;
         if (currentUser != null) {
-          return notes.userId == currentUser.id;
+          return note.userId == currentUser.id;
         } else {
           throw NotesShouldSpecifyWithCurrentUser();
         }
@@ -52,9 +51,7 @@ class NotesService {
         final dbPath = join(docsPath.path, dbName);
         final db = await openDatabase(dbPath);
         _db = db;
-        // await db.execute(dropUserTable);
         await db.execute(createUserTable);
-        // await db.execute(dropNoteTable);
         await db.execute(createNoteTable);
         await _cacheNotes();
       } on MissingPlatformDirectoryException {
@@ -280,7 +277,7 @@ class DatabaseUser {
   final int id;
   final String email;
 
-  const DatabaseUser({
+  DatabaseUser({
     required this.id,
     required this.email,
   });
@@ -306,7 +303,7 @@ class DatabaseNote {
   final String text;
   final bool isSyncedWithCloud;
 
-  const DatabaseNote({
+  DatabaseNote({
     required this.id,
     required this.userId,
     required this.text,
