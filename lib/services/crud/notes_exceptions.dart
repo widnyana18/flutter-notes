@@ -18,6 +18,6 @@ class CouldNotFindNote implements Exception {}
 
 class CouldNotUpdateNote implements Exception {}
 
-class CouldNotDeleteNote implements Exception {
-  final shared = NotesService();
-}
+class CouldNotDeleteNote implements Exception {}
+
+class NotesShouldSpecifyWithCurrentUser implements Exception {}
