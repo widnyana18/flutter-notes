@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_begineer/services/cloud/cloud_note.dart';
-import 'package:flutter_begineer/services/cloud/cloud_storage_constants.dart';
-import 'package:flutter_begineer/services/cloud/cloud_storage_exceptions.dart';
+import 'package:flutter/foundation.dart';
+
+part 'cloud_note.dart';
+part 'cloud_storage_constants.dart';
+part 'cloud_storage_exceptions.dart';
 
 class FirebaseCloudStorage {
   FirebaseCloudStorage._sharedInstance();
@@ -10,9 +12,18 @@ class FirebaseCloudStorage {
 
   final _notes = FirebaseFirestore.instance.collection(collectionName);
 
-  void createNewNote(String userId) async {
+  Future<CloudNote> createNewNote(String userId) async {
     try {
-      await _notes.add({userIdName: userId, textFieldName: ''});
+      final document = await _notes.add({
+        userIdName: userId,
+        textFieldName: '',
+      });
+      final fetchedNote = await document.get();
+      return CloudNote(
+        documentId: fetchedNote.id,
+        userId: userId,
+        text: '',
+      );
     } catch (e) {
       throw CloudNotCreateNoteException();
     }
@@ -55,11 +66,9 @@ class FirebaseCloudStorage {
     }
   }
 
-  Stream<Iterable<CloudNote>> allNotes() {
-    return _notes.snapshots().map(
-          (event) => event.docs.map(
-            (doc) => CloudNote.fromSnaphot(doc),
-          ),
-        );
+  Stream<Iterable<CloudNote>> allNotes(String userId) {
+    return _notes.snapshots().map((event) => event.docs
+        .map((doc) => CloudNote.fromSnaphot(doc))
+        .where((note) => note.userId == userId));
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter_begineer/services/auth/auth_user.dart';
+part of 'auth_service.dart';
 
 abstract class AuthProvider {
   Future<void> initialize();

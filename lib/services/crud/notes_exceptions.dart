@@ -1,3 +1,5 @@
+part of 'notes_service.dart';
+
 class UnableToGetDocumentDirectory implements Exception {}
 
 class DatabaseAlreadyOpenException implements Exception {}

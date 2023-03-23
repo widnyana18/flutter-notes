@@ -1,7 +1,4 @@
-import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
-import 'package:flutter_begineer/services/auth/auth_provider.dart';
-import 'package:flutter_begineer/services/auth/auth_user.dart';
-import 'package:flutter_begineer/services/crud/notes_service.dart';
+import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -139,7 +136,7 @@ class MockAuthProvider implements AuthProvider {
     if (email == 'foo@bar.com') throw UserNotFoundException();
     if (password == 'foobar') throw WrongPasswordException();
 // await Future.delayed(const Duration(seconds: 1));
-    _user = AuthUser(email: email);
+    _user = AuthUser(id: '1', email: email);
     return Future.value(_user);
   }
 
@@ -148,7 +145,7 @@ class MockAuthProvider implements AuthProvider {
     if (!isInitialized) NotInitializeException();
     if (_user == null) throw UserNotFoundException();
     // await Future.delayed(const Duration(seconds: 1));
-    _user = const AuthUser(email: 'foo', isEmailVerified: true);
+    _user = const AuthUser(id: '1', email: 'foo', isEmailVerified: true);
   }
 
   @override

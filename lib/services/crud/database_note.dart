@@ -1,5 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_begineer/services/crud/notes_constans.dart';
+part of 'notes_service.dart';
 
 @immutable
 class DatabaseUser {
@@ -48,7 +47,7 @@ class DatabaseNote {
 
   @override
   String toString() =>
-      'Database user{id: $id, userId: $userId, text: $text, isSyncedWithCloud: $isSyncedWithCloud}';
+      'Database Note{id: $id, userId: $userId, text: $text, isSyncedWithCloud: $isSyncedWithCloud}';
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;

@@ -1,3 +1,5 @@
+part of 'auth_service.dart';
+
 class UserNotFoundException implements Exception {}
 
 class WrongPasswordException implements Exception {}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/constants/routes.dart';
-import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/utils/dialogs/error_dialog.dart';
 

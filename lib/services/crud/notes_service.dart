@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:flutter_begineer/extentions/list/filter.dart';
-import 'package:flutter_begineer/services/crud/database_note.dart';
-import 'package:flutter_begineer/services/crud/notes_constans.dart';
-import 'package:flutter_begineer/services/crud/notes_exceptions.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_begineer/extentions/list/filter.dart';
+
+part 'database_note.dart';
+part 'notes_constans.dart';
+part 'notes_exceptions.dart';
 
 class NotesService {
   Database? _db;

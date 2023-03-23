@@ -1,9 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_begineer/firebase_options.dart';
-import 'package:flutter_begineer/services/auth/auth_exceptions.dart';
-import 'package:flutter_begineer/services/auth/auth_provider.dart';
-import 'package:flutter_begineer/services/auth/auth_user.dart';
+part of 'auth_service.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
   @override

@@ -1,3 +1,5 @@
+part of 'notes_service.dart';
+
 const dbName = 'notes.db';
 const noteTable = 'note';
 const userTable = 'user';

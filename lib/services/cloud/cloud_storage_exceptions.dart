@@ -1,3 +1,5 @@
+part of 'firebase_cloud_storage.dart';
+
 class CloudStorageException implements Exception {}
 
 class CloudNotCreateNoteException extends CloudStorageException {}
