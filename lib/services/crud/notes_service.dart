@@ -1,7 +1,7 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter_begineer/extentions/list/filter.dart';
+import 'package:flutter_begineer/services/crud/database_note.dart';
+import 'package:flutter_begineer/services/crud/notes_constans.dart';
 import 'package:flutter_begineer/services/crud/notes_exceptions.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
@@ -271,81 +271,3 @@ class NotesService {
     return totalDeletions;
   }
 }
-
-@immutable
-class DatabaseUser {
-  final int id;
-  final String email;
-
-  DatabaseUser({
-    required this.id,
-    required this.email,
-  });
-
-  DatabaseUser.fromRow(Map<String, Object?> map)
-      : id = map[idCol] as int,
-        email = map[emailCol] as String;
-
-  @override
-  String toString() => 'Database user{id: $id, email: $email}';
-
-  @override
-  bool operator ==(covariant DatabaseUser other) => id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
-}
-
-@immutable
-class DatabaseNote {
-  final int id;
-  final int userId;
-  final String text;
-  final bool isSyncedWithCloud;
-
-  DatabaseNote({
-    required this.id,
-    required this.userId,
-    required this.text,
-    this.isSyncedWithCloud = false,
-  });
-
-  DatabaseNote.fromRow(Map<String, Object?> map)
-      : id = map[idCol] as int,
-        userId = map[userIdCol] as int,
-        text = map[textCol] as String,
-        isSyncedWithCloud =
-            (map[isSyncedWithCloudCol] as int) == 0 ? false : true;
-
-  @override
-  String toString() =>
-      'Database user{id: $id, userId: $userId, text: $text, isSyncedWithCloud: $isSyncedWithCloud}';
-
-  @override
-  bool operator ==(covariant DatabaseUser other) => id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
-}
-
-const dbName = 'notes.db';
-const noteTable = 'note';
-const userTable = 'user';
-const idCol = 'id';
-const emailCol = 'email';
-const userIdCol = 'user_id';
-const textCol = 'text';
-const isSyncedWithCloudCol = 'is_synced_with_cloud';
-const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
-        "id"	INTEGER NOT NULL,
-        "email"	TEXT NOT NULL UNIQUE,
-        PRIMARY KEY("id" AUTOINCREMENT)
-      );''';
-const createNoteTable = '''CREATE TABLE IF NOT EXISTS "note" (
-        "id"	INTEGER NOT NULL,
-        "user_id"	INTEGER NOT NULL,
-        "text"	TEXT,
-        "is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
-        FOREIGN KEY("user_id") REFERENCES "user"("id"),
-        PRIMARY KEY("id" AUTOINCREMENT)
-      );''';

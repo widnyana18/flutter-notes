@@ -1,5 +1,3 @@
-import 'package:flutter_begineer/services/crud/notes_service.dart';
-
 class UnableToGetDocumentDirectory implements Exception {}
 
 class DatabaseAlreadyOpenException implements Exception {}
