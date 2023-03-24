@@ -28,62 +28,63 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('My Notes'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(createUpdateNoteRoute);
-              },
-              icon: const Icon(Icons.add),
-            ),
-            PopupMenuButton<MenuAction>(
-              onSelected: (value) async {
-                if (value == MenuAction.logout) {
-                  final shouldLogout = await showLogoutDialog(context);
-                  if (shouldLogout) {
-                    await AuthService.firebase().signOut();
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil(loginRoute, (_) => false);
-                  }
+      appBar: AppBar(
+        title: const Text('My Notes'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(createUpdateNoteRoute);
+            },
+            icon: const Icon(Icons.add),
+          ),
+          PopupMenuButton<MenuAction>(
+            onSelected: (value) async {
+              if (value == MenuAction.logout) {
+                final shouldLogout = await showLogoutDialog(context);
+                if (shouldLogout) {
+                  await AuthService.firebase().signOut();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(loginRoute, (_) => false);
                 }
-              },
-              itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: MenuAction.logout,
-                  child: Text('Logout'),
-                ),
-              ],
-            ),
-          ],
-        ),
-        body: StreamBuilder(
-          stream: _notesService.allNotes(userId),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-              case ConnectionState.active:
-                if (snapshot.hasData) {
-                  final allNotes = snapshot.data as Iterable<CloudNote>;
-                  return NotesListView(
-                    notes: allNotes,
-                    onTap: (note) {
-                      Navigator.of(context).pushNamed(
-                        createUpdateNoteRoute,
-                        arguments: note,
-                      );
-                    },
-                    onDeleteNote: (note) async {
-                      await _notesService.deleteNote(note.documentId);
-                    },
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              default:
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: MenuAction.logout,
+                child: Text('Logout'),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: StreamBuilder(
+        stream: _notesService.allNotes(userId),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              if (snapshot.hasData) {
+                final allNotes = snapshot.data as Iterable<CloudNote>;
+                return NotesListView(
+                  notes: allNotes,
+                  onTap: (note) {
+                    Navigator.of(context).pushNamed(
+                      createUpdateNoteRoute,
+                      arguments: note,
+                    );
+                  },
+                  onDeleteNote: (note) async {
+                    await _notesService.deleteNote(note.documentId);
+                  },
+                );
+              } else {
                 return const CircularProgressIndicator();
-            }
-          },
-        ));
+              }
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
+      ),
+    );
   }
 }
