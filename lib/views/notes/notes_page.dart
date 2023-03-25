@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
+import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_begineer/services/cloud/firebase_cloud_storage.dart';
 import 'package:flutter_begineer/utils/dialogs/logout_dialog.dart';
 import 'package:flutter_begineer/views/notes/notes_list_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum MenuAction { logout }
 
@@ -42,9 +44,9 @@ class _NotesPageState extends State<NotesPage> {
               if (value == MenuAction.logout) {
                 final shouldLogout = await showLogoutDialog(context);
                 if (shouldLogout) {
-                  await AuthService.firebase().signOut();
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(loginRoute, (_) => false);
+                  context.read<AuthBloc>().add(
+                        const LogoutEvent(),
+                      );
                 }
               }
             },

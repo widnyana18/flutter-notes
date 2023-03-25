@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/constants/routes.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
+import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_begineer/utils/dialogs/error_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -57,25 +59,14 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
-              final user = AuthService.firebase().currentUser;
 
               try {
-                await AuthService.firebase().loginUser(
-                  email: email,
-                  password: password,
-                );
-
-                // if (user?.isEmailVerified ?? false) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  notesRoute,
-                  (route) => false,
-                );
-                // } else {
-                // Navigator.of(context).pushNamedAndRemoveUntil(
-                //   verifyEmailRoute,
-                //   (route) => false,
-                // );
-                // }
+                context.read<AuthBloc>().add(
+                      LoginEvent(
+                        email: email,
+                        password: password,
+                      ),
+                    );
               } on UserNotFoundException {
                 await showErrorDialog(context, content: 'User not Found');
               } on WrongPasswordException {
