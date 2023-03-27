@@ -54,27 +54,33 @@ class _LoginPageState extends State<LoginPage> {
             decoration:
                 const InputDecoration(hintText: 'Enter your password here'),
           ),
-          TextButton(
-            child: const Text('Login'),
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) async {
+              if (state is UnauthenticatedState) {
+                if (state.error is UserNotFoundException) {
+                  await showErrorDialog(context, content: 'User not Found');
+                } else if (state.error is WrongPasswordException) {
+                  await showErrorDialog(context, content: 'Wrong Password');
+                } else if (state.error is GenericAuthException) {
+                  await showErrorDialog(context,
+                      content: 'Authentication Error');
+                }
+              }
+            },
+            child: TextButton(
+              child: const Text('Login'),
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
 
-              try {
                 context.read<AuthBloc>().add(
                       LoginEvent(
                         email: email,
                         password: password,
                       ),
                     );
-              } on UserNotFoundException {
-                await showErrorDialog(context, content: 'User not Found');
-              } on WrongPasswordException {
-                await showErrorDialog(context, content: 'Wrong Password');
-              } on GenericAuthException {
-                await showErrorDialog(context, content: 'Authentication Error');
-              }
-            },
+              },
+            ),
           ),
           TextButton(
             onPressed: () {
