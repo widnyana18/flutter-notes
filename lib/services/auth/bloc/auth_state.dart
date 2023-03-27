@@ -19,16 +19,19 @@ class RegisteringState extends AuthState {
   const RegisteringState(this.error);
 }
 
-class UnauthenticatedState extends AuthState {
-  final Exception? error;
-  const UnauthenticatedState(this.error);
-}
-
-class LogoutFailedState extends AuthState {
-  final Exception error;
-  const LogoutFailedState(this.error);
-}
-
 class NeedVerificationState extends AuthState {
   const NeedVerificationState();
+}
+
+class UnauthenticatedState extends AuthState with EquatableMixin {
+  final Exception? error;
+  final bool isLoading;
+
+  const UnauthenticatedState({
+    this.error,
+    required this.isLoading,
+  });
+
+  @override
+  List<Object?> get props => [error, isLoading];
 }

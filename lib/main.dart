@@ -50,6 +50,8 @@ class HomePage extends StatelessWidget {
           return const NotesPage();
         } else if (state is UnauthenticatedState) {
           return const LoginPage();
+        } else if (state is RegisteringState) {
+          return const RegisterPage();
         } else if (state is NeedVerificationState) {
           return const VerifyEmailPage();
         } else {
