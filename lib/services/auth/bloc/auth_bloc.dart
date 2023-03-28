@@ -17,15 +17,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         if (user != null) {
           if (user.isEmailVerified) {
-            emit(AuthenticatedState(user));
+            emit(AuthenticatedState(user: user));
           } else {
             emit(const NeedVerificationState());
           }
         } else {
-          emit(const UnauthenticatedState(
-            error: null,
-            isLoading: false,
-          ));
+          emit(const UnauthenticatedState(error: null));
         }
       } catch (_) {
         emit(const UninitializeState());
@@ -36,33 +33,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final email = event.email;
       final psw = event.password;
 
-      emit(const UnauthenticatedState(
-        error: null,
-        isLoading: true,
-      ));
       try {
+        emit(const UnauthenticatedState(
+          error: null,
+          isLoading: true,
+        ));
         final user = await provider.loginUser(
           email: email,
           password: psw,
         );
         if (!user!.isEmailVerified) {
-          emit(const UnauthenticatedState(
-            error: null,
-            isLoading: false,
-          ));
           emit(const NeedVerificationState());
         } else {
-          emit(const UnauthenticatedState(
-            error: null,
-            isLoading: false,
-          ));
-          emit(AuthenticatedState(user));
+          emit(AuthenticatedState(user: user));
         }
       } on Exception catch (e) {
-        emit(UnauthenticatedState(
-          error: e,
-          isLoading: false,
-        ));
+        emit(UnauthenticatedState(error: e));
       }
     });
 
@@ -74,10 +60,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final email = event.email;
       final psw = event.password;
 
-      // emit(const UnauthenticatedState(
-      //   error: null,
-      //   isLoading: true,
-      // ));
       try {
         await provider.createUser(
           email: email,
@@ -90,31 +72,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<VerifyEmailEvent>((event, emit) async {
+      final user = provider.currentUser!;
       try {
+        emit(const NeedVerificationState(isLoading: true));
         await provider.sendEmailVerification();
-        final user = provider.currentUser!;
-        emit(AuthenticatedState(user));
+        emit(AuthenticatedState(user: user));
       } on Exception catch (_) {
         emit(const NeedVerificationState());
       }
     });
 
     on<LogoutEvent>((event, emit) async {
-      // emit(const UnauthenticatedState(
-      //   error: null,
-      //   isLoading: true,
-      // ));
+      final user = provider.currentUser;
       try {
-        await provider.signOut();
-        emit(const UnauthenticatedState(
-          error: null,
-          isLoading: false,
-        ));
+        if (user != null) {
+          emit(AuthenticatedState(
+            user: user,
+            isLoading: true,
+          ));
+          await provider.signOut();
+        }
+        emit(const UnauthenticatedState(error: null));
       } on Exception catch (e) {
-        emit(UnauthenticatedState(
-          error: e,
-          isLoading: false,
-        ));
+        emit(UnauthenticatedState(error: e));
       }
     });
   }

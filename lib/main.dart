@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/constants/routes.dart';
+import 'package:flutter_begineer/helper/loading/loading_screen.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart'
     show FirebaseAuthProvider;
 import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
@@ -44,7 +45,17 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(const InitializeEvent());
 
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.isLoading) {
+          LoadingScreen().show(
+            context,
+            text: state.loadingText ?? 'Wait a moment',
+          );
+        } else {
+          LoadingScreen().hide();
+        }
+      },
       builder: (context, state) {
         if (state is AuthenticatedState) {
           return const NotesPage();
@@ -55,9 +66,7 @@ class HomePage extends StatelessWidget {
         } else if (state is NeedVerificationState) {
           return const VerifyEmailPage();
         } else {
-          return const Scaffold(
-            body: CircularProgressIndicator(),
-          );
+          return const SplashScreen();
         }
       },
     );
