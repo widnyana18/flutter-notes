@@ -71,14 +71,51 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<ResetPasswordByEmailEvent>((event, emit) async {
+      final email = event.email;
+      bool didSendEmail;
+      Exception? exception;
+
+      emit(const ForgotPasswordState());
+
+      if (email == null) {
+        return;
+      }
+
+      emit(const ForgotPasswordState(
+        error: null,
+        isLoading: true,
+      ));
+
+      try {
+        await provider.sendPasswordReset(email);
+        didSendEmail = true;
+        exception = null;
+        emit(const UnauthenticatedState());
+      } on Exception catch (e) {
+        didSendEmail = false;
+        exception = e;
+      }
+      emit(ForgotPasswordState(
+        isLoading: false,
+        error: exception,
+        hasSentEmail: didSendEmail,
+      ));
+    });
+
     on<VerifyEmailEvent>((event, emit) async {
       final user = provider.currentUser!;
       try {
         emit(const NeedVerificationState(isLoading: true));
         await provider.sendEmailVerification();
-        emit(AuthenticatedState(user: user));
       } on Exception catch (_) {
         emit(const NeedVerificationState());
+      }
+
+      if (user.isEmailVerified) {
+        emit(AuthenticatedState(user: user));
+      } else {
+        emit(state);
       }
     });
 

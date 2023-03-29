@@ -11,33 +11,43 @@ class VerifyEmailPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Verify Email'),
       ),
-      body: Column(
-        children: [
-          const Text(
-              "We've sent you an email verification. Please open it to verify your account."),
-          const Text(
-              "If you haven't recived a verification email yet, press the button below"),
-          TextButton(
-            onPressed: () async {
-              context.read<AuthBloc>().add(const VerifyEmailEvent());
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //   notesRoute,
-              //   (route) => false,
-              // );
-            },
-            child: const Text('Send email verification'),
-          ),
-          TextButton(
-            onPressed: () async {
-              context.read<AuthBloc>().add(const LogoutEvent());
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //   registerRoute,
-              //   (route) => false,
-              // );
-            },
-            child: const Text('Restart'),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 25),
+            const Text(
+                "We've sent you an email verification. Please open it to verify your account."),
+            const Text(
+                "If you haven't recived a verification email yet, press the button below"),
+            const SizedBox(height: 20),
+            Column(
+              children: [
+                TextButton(
+                  onPressed: () async {
+                    context.read<AuthBloc>().add(const VerifyEmailEvent());
+                    // Navigator.of(context).pushNamedAndRemoveUntil(
+                    //   notesRoute,
+                    //   (route) => false,
+                    // );
+                  },
+                  child: const Text('Send email verification'),
+                ),
+              ],
+            ),
+            TextButton(
+              onPressed: () async {
+                context.read<AuthBloc>().add(const LogoutEvent());
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //   registerRoute,
+                //   (route) => false,
+                // );
+              },
+              child: const Text('Restart'),
+            ),
+          ],
+        ),
       ),
     );
   }

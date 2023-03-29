@@ -6,7 +6,7 @@ abstract class AuthState {
   final String? loadingText;
   const AuthState({
     this.isLoading = false,
-    this.loadingText,
+    this.loadingText = 'Please wait a moment',
   });
 }
 
@@ -19,7 +19,7 @@ class AuthenticatedState extends AuthState with EquatableMixin {
   const AuthenticatedState({
     required this.user,
     super.isLoading,
-    super.loadingText = 'Please wait a moment',
+    super.loadingText,
   });
 
   @override
@@ -29,6 +29,17 @@ class AuthenticatedState extends AuthState with EquatableMixin {
 class RegisteringState extends AuthState {
   final Exception? error;
   const RegisteringState(this.error);
+}
+
+class ForgotPasswordState extends AuthState {
+  final Exception? error;
+  final bool hasSentEmail;
+
+  const ForgotPasswordState({
+    this.error,
+    this.hasSentEmail = false,
+    super.isLoading,
+  });
 }
 
 class NeedVerificationState extends AuthState {

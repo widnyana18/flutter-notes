@@ -63,6 +63,8 @@ class HomePage extends StatelessWidget {
           return const LoginPage();
         } else if (state is RegisteringState) {
           return const RegisterPage();
+        } else if (state is ForgotPasswordState) {
+          return const ForgotPasswordView();
         } else if (state is NeedVerificationState) {
           return const VerifyEmailPage();
         } else {

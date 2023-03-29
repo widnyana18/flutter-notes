@@ -29,6 +29,16 @@ class RegisterEvent extends AuthEvent {
   });
 }
 
+class ResetPasswordByEmailEvent extends AuthEvent {
+  final String? email;
+  const ResetPasswordByEmailEvent(this.email);
+}
+
+class UpdatePasswordEvent extends AuthEvent {
+  final String newPsw;
+  const UpdatePasswordEvent(this.newPsw);
+}
+
 class NeedRegisterEvent extends AuthEvent {
   const NeedRegisterEvent();
 }
