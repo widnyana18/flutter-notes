@@ -1,10 +1,10 @@
 {
-    "name": "flutter_begineer",
+    "name": "Catat Kuy",
     "short_name": "flutter_begineer",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
+    "background_color": "#f7ede2",
+    "theme_color": "#f7ede2",
     "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,

@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthProvider provider;
   AuthBloc(this.provider) : super(const UninitializeState()) {
     on<InitializeEvent>((event, emit) async {
+      Future.delayed(const Duration(seconds: 2));
       try {
         await provider.initialize();
         final user = provider.currentUser;
