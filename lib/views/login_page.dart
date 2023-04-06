@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/extentions/context/loc.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_begineer/utils/dialogs/error_dialog.dart';
@@ -35,17 +36,20 @@ class _LoginPageState extends State<LoginPage> {
       listener: (context, state) async {
         if (state is UnauthenticatedState) {
           if (state.error is UserNotFoundException) {
-            await showErrorDialog(context, content: 'User not Found');
+            await showErrorDialog(context,
+                content: context.loc.login_error_cannot_find_user);
           } else if (state.error is WrongPasswordException) {
-            await showErrorDialog(context, content: 'Wrong Password');
+            await showErrorDialog(context,
+                content: context.loc.login_error_wrong_credentials);
           } else if (state.error is GenericAuthException) {
-            await showErrorDialog(context, content: 'Authentication Error');
+            await showErrorDialog(context,
+                content: context.loc.login_error_auth_error);
           }
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Login'),
+          title: Text(context.loc.login),
         ),
         body: Padding(
           padding: const EdgeInsets.all(25),
@@ -53,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 25),
-              const Text('Input your account address to display your notes'),
+              Text(context.loc.login_view_prompt),
               const SizedBox(height: 20),
               TextField(
                 controller: _email,
@@ -61,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                 enableSuggestions: false,
                 autocorrect: false,
                 autofocus: true,
-                decoration:
-                    const InputDecoration(hintText: 'Enter your email here'),
+                decoration: InputDecoration(
+                    hintText: context.loc.email_text_field_placeholder),
               ),
               TextField(
                 controller: _password,
@@ -70,14 +74,14 @@ class _LoginPageState extends State<LoginPage> {
                 enableSuggestions: false,
                 autocorrect: false,
                 autofocus: true,
-                decoration:
-                    const InputDecoration(hintText: 'Enter your password here'),
+                decoration: InputDecoration(
+                    hintText: context.loc.password_text_field_placeholder),
               ),
               const SizedBox(height: 20),
               Column(
                 children: [
                   TextButton(
-                    child: const Text('Login'),
+                    child: Text(context.loc.login),
                     onPressed: () async {
                       final email = _email.text;
                       final password = _password.text;
@@ -100,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Navigator.of(context)
                       //     .pushNamedAndRemoveUntil(forgotPassword, (route) => false);
                     },
-                    child: const Text('Forgot password?'),
+                    child: Text(context.loc.forgot_password),
                   ),
                   TextButton(
                     onPressed: () {
@@ -108,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Navigator.of(context)
                       //     .pushNamedAndRemoveUntil(registerRoute, (route) => false);
                     },
-                    child: const Text('Not regitered yet? Register here!'),
+                    child: Text(context.loc.login_view_not_registered_yet),
                   ),
                 ],
               ),

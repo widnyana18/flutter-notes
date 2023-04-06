@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/extentions/context/loc.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_begineer/utils/dialogs/error_dialog.dart';
@@ -35,19 +36,23 @@ class _RegisterPageState extends State<RegisterPage> {
       listener: (context, state) async {
         if (state is RegisteringState) {
           if (state.error is WeakPasswordException) {
-            await showErrorDialog(context, content: 'Weak password');
+            await showErrorDialog(context,
+                content: context.loc.register_error_weak_password);
           } else if (state.error is EmailAlreadyInUseException) {
-            await showErrorDialog(context, content: 'Email already in use');
+            await showErrorDialog(context,
+                content: context.loc.register_error_email_already_in_use);
           } else if (state.error is InvalidEmailException) {
-            await showErrorDialog(context, content: 'Invalid email');
+            await showErrorDialog(context,
+                content: context.loc.register_error_invalid_email);
           } else {
-            await showErrorDialog(context, content: 'Failed to register');
+            await showErrorDialog(context,
+                content: context.loc.register_error_generic);
           }
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Register'),
+          title: Text(context.loc.register),
         ),
         body: Padding(
           padding: const EdgeInsets.all(25),
@@ -55,23 +60,23 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 25),
-              const Text('Input your account address to display your notes'),
+              Text(context.loc.register_view_prompt),
               const SizedBox(height: 20),
               TextField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
                 enableSuggestions: false,
                 autocorrect: false,
-                decoration:
-                    const InputDecoration(hintText: 'Enter your email here'),
+                decoration: InputDecoration(
+                    hintText: context.loc.email_text_field_placeholder),
               ),
               TextField(
                 controller: _password,
                 obscureText: true,
                 enableSuggestions: false,
                 autocorrect: false,
-                decoration:
-                    const InputDecoration(hintText: 'Enter your password here'),
+                decoration: InputDecoration(
+                    hintText: context.loc.password_text_field_placeholder),
               ),
               const SizedBox(height: 20),
               Column(
@@ -89,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           );
                       // Navigator.of(context).pushNamed(verifyEmailRoute);
                     },
-                    child: const Text('Register'),
+                    child: Text(context.loc.register),
                   ),
                   TextButton(
                     onPressed: () {
@@ -97,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       // Navigator.of(context)
                       //     .pushNamedAndRemoveUntil(loginRoute, (route) => false);
                     },
-                    child: const Text('Already registered? Login here!'),
+                    child: Text(context.loc.register_view_already_registered),
                   ),
                 ],
               ),

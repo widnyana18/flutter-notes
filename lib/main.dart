@@ -7,6 +7,7 @@ import 'package:flutter_begineer/services/auth/auth_service.dart'
 import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_begineer/views/views.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       title: 'Catat Kuy',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -74,7 +77,7 @@ class HomePage extends StatelessWidget {
         } else if (state is NeedVerificationState) {
           return const VerifyEmailPage();
         } else {
-          return const SplashScreen();
+          return const SizedBox.shrink();
         }
       },
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_begineer/extentions/context/loc.dart';
 import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +10,7 @@ class VerifyEmailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verify Email'),
+        title: Text(context.loc.verify_email),
       ),
       body: Padding(
         padding: const EdgeInsets.all(25),
@@ -17,10 +18,7 @@ class VerifyEmailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 25),
-            const Text(
-                "We've sent you an email verification. Please open it to verify your account."),
-            const Text(
-                "If you haven't recived a verification email yet, press the button below"),
+            Text(context.loc.verify_email_view_prompt),
             const SizedBox(height: 20),
             Column(
               children: [
@@ -32,7 +30,7 @@ class VerifyEmailPage extends StatelessWidget {
                     //   (route) => false,
                     // );
                   },
-                  child: const Text('Send email verification'),
+                  child: Text(context.loc.verify_email_send_email_verification),
                 ),
               ],
             ),
@@ -44,7 +42,7 @@ class VerifyEmailPage extends StatelessWidget {
                 //   (route) => false,
                 // );
               },
-              child: const Text('Restart'),
+              child: Text(context.loc.restart),
             ),
           ],
         ),

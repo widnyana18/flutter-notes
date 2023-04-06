@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_begineer/constants/routes.dart';
+import 'package:flutter_begineer/extentions/context/loc.dart';
 import 'package:flutter_begineer/services/auth/auth_service.dart';
 import 'package:flutter_begineer/services/auth/bloc/auth_bloc.dart';
 import 'package:flutter_begineer/services/cloud/firebase_cloud_storage.dart';
@@ -8,6 +9,10 @@ import 'package:flutter_begineer/views/notes/notes_list_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum MenuAction { logout }
+
+extension Count<T extends Iterable> on Stream<T> {
+  Stream<int> get getLength => map((event) => event.length);
+}
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key? key}) : super(key: key);
@@ -31,7 +36,17 @@ class _NotesPageState extends State<NotesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Notes'),
+        title: StreamBuilder<int>(
+            stream: _notesService.allNotes(userId).getLength,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final count = snapshot.data ?? 0;
+                final text = context.loc.notes_title(count);
+                return Text(text);
+              } else {
+                return const Text('');
+              }
+            }),
         actions: [
           IconButton(
             onPressed: () {
@@ -51,9 +66,9 @@ class _NotesPageState extends State<NotesPage> {
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: MenuAction.logout,
-                child: Text('Logout'),
+                child: Text(context.loc.logout_button),
               ),
             ],
           ),
