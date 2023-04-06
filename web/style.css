@@ -3,11 +3,24 @@ body {
     background-color: #EDF2F4;
 }
 
-.splash {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+.splash {    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  
 }
+
+.splash img{
+   width: 25vh;
+}
+
+.splash h2 {
+    font: bold 20px "Inter", sans-serif;
+    color: black; 
+}
+
+.splash h2 span {
+    color: #066EC0;
+}
+
